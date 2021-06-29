@@ -27,8 +27,8 @@ const IndexScreen = ({ navigation, deleteItem, setShopState, SginOut, userReduce
                     <Text style={{ fontSize: 24,marginRight: 5 }}>Sgin Out</Text>
                 </TouchableOpacity>
         })
-        const valueChanged = database().ref('shoppingList')
-            .orderByChild('uid').equalTo(user.uid)
+        const valueChanged = database().ref(`shoppingList/${user.uid}`)
+            //.orderByChild('uid').equalTo(user.uid)
             .on('value', (snapshot) => {
 
                 const shopping_list = []
@@ -78,7 +78,7 @@ const IndexScreen = ({ navigation, deleteItem, setShopState, SginOut, userReduce
 
                                 <ShoppingList
                                     item={item}
-                                    onDelete={(key) => { deleteItem(key) }}
+                                    onDelete={(key) => { deleteItem(user.uid,key) }}
                                     onEdit={(key) => { navigation.navigate('Edit', { key: key }) }}
                                 />
 
@@ -154,7 +154,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
 
-        deleteItem: (key) => dispatch(removeItem(key)),
+        deleteItem: (uid,key) => dispatch(removeItem(uid,key)),
         setShopState: (shopList) => dispatch(setShoppingState(shopList)),
         SginOut: () => dispatch(sginOut())
             

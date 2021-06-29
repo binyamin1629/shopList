@@ -3,21 +3,21 @@ import { View, StyleSheet, TextInput, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { updateItem } from '../reducers/ShoppingActions'
 import ShoppingForm from '../components/ShoppingForm'
-import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 
 
 const EditScreen = ({ shopping_list, route, updateShoppingItem }) => {
 
 
-    //console.log(shopping_list)
+    //console.log(shopping_list[0].uid)
     const key = route.params.key;
-    console.log(key)
-    console.log(shopping_list)
+    // console.log(key)
+    // console.log(shopping_list)
 
     const initialValues = shopping_list.find((item) => item.key == key)
+    const user = auth().currentUser
 
-
-    console.log(initialValues)
+ 
 
 
     return (
@@ -27,7 +27,7 @@ const EditScreen = ({ shopping_list, route, updateShoppingItem }) => {
                 initialValues={initialValues}
                 buttonTitle="Update Item"
                 onSubmit={(title, description) => {
-                    updateShoppingItem(key, title, description)
+                    updateShoppingItem(user.uid,key, title, description)
                 }
 
                 }
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({})
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        updateShoppingItem: (key, title, description) => dispatch(
-            updateItem(key, title, description)
+        updateShoppingItem: (uid,key, title, description) => dispatch(
+            updateItem(uid,key, title, description)
             , ownProps.navigation.navigate('Index')
         )
     }

@@ -21,7 +21,7 @@ export const addItem = (uid,title, description) => {
 
     
         return (dispatch)=>{
-            const newItem = database().ref('shoppingList/').push();
+            const newItem = database().ref(`shoppingList/${uid}`).push();
             console.log(uid)
             newItem.set({
                 uid:uid,
@@ -51,11 +51,11 @@ export const addItem = (uid,title, description) => {
 
 
 //id after fetch 
-export const updateItem = (key, title, description) => {
+export const updateItem = (uid,key, title, description) => {
 
     return (dispatch) => {
         const updatedItem = database()
-            .ref(`shoppingList/${key}`)
+            .ref(`shoppingList/${uid}/${key}`)
             .update({
                 title: title,
                 description: description,
@@ -75,11 +75,11 @@ export const updateItem = (key, title, description) => {
 
 
 
-export const removeItem = (key) => {
+export const removeItem = (uid,key) => {
 
     return (dispatch) => {
         database()
-            .ref(`shoppingList/${key}`)
+            .ref(`shoppingList/${uid}/${key}`)
             .remove()
             .then(() => {
                 dispatch({
